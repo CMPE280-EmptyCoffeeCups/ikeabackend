@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var mongo = require("./mongo");
+var mongo = require("../db/mongo");
 // Authenticate user and add to DB if needed.
 router.post('/authenticate', function(req, res, next) {
   var email = req.body.email;
   var fname = req.body.given_name;
   var lname = req.body.family_name;
   var requestJSON = {"email":email};
-  var resJSON={};
+
   mongo.findOne('USER_DETAILS',requestJSON,function(err,searchRes){
       if(err){
           console.log(err);
@@ -26,16 +26,12 @@ router.post('/authenticate', function(req, res, next) {
                       });
                   }else{
                       console.log("INSERTING USER");
-                      res.status(200).send({
-                            msg: 'Account created.'
-                      });
+                      res.status(200);
                   }
               });
           }else{
              console.log("User already exists");
-              res.status(200).send({
-                  msg: 'Account created.'
-              });
+              res.status(200);
           }
 
       }
