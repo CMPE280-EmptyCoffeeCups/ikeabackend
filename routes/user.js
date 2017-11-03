@@ -89,6 +89,21 @@ router.post('/updateProfile',function(req,res){
     });
 });
 
+router.post('/deleteProfile',function(req,res){
+    var email = req.body.email;
+    var queryJSON = {email};
+    mongo.deleteOne('USER_DETAILS',queryJSON,function (err,delRes) {
+        if(err){
+            res.status(500).send({
+                error: 'There was an error.'
+            });
+        }else{
+            if(delRes!==null){
+                res.status(200).send();
+            }
+        }
+    })
+});
 
 
 module.exports = router;
