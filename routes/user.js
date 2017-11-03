@@ -4,6 +4,7 @@ var mongo = require("../db/mongo");
 var mongodb = require('mongodb');
 // Authenticate user and add to DB if needed.
 router.post('/authenticate', function(req, res, next) {
+
   var email = req.body.email;
   var requestJSON = {"email":email};
 
@@ -62,7 +63,6 @@ router.get('/profile', function(req, res, next) {
 });
 
 router.post('/updateProfile',function(req,res){
-    console.log(req.body);
     var fname=req.body.fname;
     var lname=req.body.lname;
     var address=req.body.address;
