@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongo = require("../db/mongo");
+var mongodb = require('mongodb');
 // Authenticate user and add to DB if needed.
 router.post('/authenticate', function(req, res, next) {
   var email = req.body.email;
@@ -62,13 +63,14 @@ router.get('/profile', function(req, res, next) {
 
 router.post('/updateProfile',function(req,res){
     console.log(req.body);
-    var email = req.body.email;
-    var fname = req.body.fname;
-    var lname = req.body.lname;
-    var address = req.body.address;
-    var paymentDetails =req.body.paymentMethods;
-    var profileJSON = {"fname":fname,"lname":lname,"address":address,"payment":paymentDetails};
-    var queryJSON = {"email":email};
+    var fname=req.body.fname;
+    var lname=req.body.lname;
+    var address=req.body.address;
+    var payment=req.body.paymentMethods;
+
+    var profileJSON = {$set:{"fname":fname,"lname":lname,"address":address,"paymentMethods":payment}};
+    var userID = mongodb.ObjectID(req.body._id);
+    var queryJSON = {"_id":userID};
     mongo.updateOne('USER_DETAILS',queryJSON,profileJSON,function(err,searchRes){
         if(err){
             console.log(err);
