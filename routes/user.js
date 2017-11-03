@@ -31,7 +31,7 @@ router.post('/authenticate', function(req, res, next) {
               });
           }else{
              console.log("User already exists");
-              console.log(searchRes);
+              
               res.status(200).send({"profile":searchRes});
           }
 
