@@ -17,7 +17,7 @@ router.post('/authenticate', function(req, res, next) {
       }else{
 
           if(searchRes===null){
-              var insertJSON={"email":email,"fname":fname,"lname":lname};
+              var insertJSON=req.body;
               mongo.insert('USER_DETAILS',insertJSON,function(err,insertRes){
                   if(err){
                       console.log("Failed to insert user. "+err);
