@@ -42,6 +42,7 @@ router.post('/authenticate', function(req, res, next) {
 
 router.get('/profile', function(req, res, next) {
     var email = req.body.email;
+    var requestJSON = {"email":email};
     mongo.findOne('USER_DETAILS',requestJSON,function(err,searchRes){
         if(err){
             console.log(err);
@@ -50,7 +51,7 @@ router.get('/profile', function(req, res, next) {
             });
         }else{
 
-            if(searchRes!=null){
+            if(searchRes!==null){
                 console.log(searchRes);
                 //res.status(200).send({"user":searchRes});
             }else{
@@ -63,8 +64,8 @@ router.get('/profile', function(req, res, next) {
 
 router.post('/updateProfile',function(req,res,next){
     var email = req.body.email;
-    var fname = req.body.given_name;
-    var lname = req.body.family_name;
+    var fname = req.body.fname;
+    var lname = req.body.lname;
     var address = req.body.address;
     var cardnumber = req.body.cardnumber;
     var mm = req.body.mm;
@@ -83,7 +84,7 @@ router.post('/updateProfile',function(req,res,next){
             });
         }else{
 
-            if(searchRes!=null){
+            if(searchRes!==null){
 
                 res.status(200);
             }else{

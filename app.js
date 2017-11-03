@@ -17,6 +17,7 @@ var user = require('./routes/user');
 var items = require('./routes/items');
 
 var app = express();
+var path = require('path')
 app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
