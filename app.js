@@ -17,15 +17,15 @@ var user = require('./routes/user');
 var items = require('./routes/items');
 
 var app = express();
-var path = require('path')
+var path = require('path');
 app.use(cors());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use('/user', jwtCheck, user);
-app.use('/items', jwtCheck, items);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/items', items);
+app.use(express.static('public'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
