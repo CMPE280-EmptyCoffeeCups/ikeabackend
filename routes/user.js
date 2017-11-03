@@ -4,8 +4,6 @@ var mongo = require("../db/mongo");
 // Authenticate user and add to DB if needed.
 router.post('/authenticate', function(req, res, next) {
   var email = req.body.email;
-  var fname = req.body.fname;
-  var lname = req.body.lname;
   var requestJSON = {"email":email};
 
   mongo.findOne('USER_DETAILS',requestJSON,function(err,searchRes){
@@ -62,18 +60,13 @@ router.get('/profile', function(req, res, next) {
 
 });
 
-router.post('/updateProfile',function(req,res,next){
+router.post('/updateProfile',function(req,res){
+    console.log(req.body);
     var email = req.body.email;
     var fname = req.body.fname;
     var lname = req.body.lname;
     var address = req.body.address;
-    var cardnumber = req.body.cardnumber;
-    var mm = req.body.mm;
-    var yy = req.body.yy;
-    var cvv = req.body.cvv;
-    var cardholdername = req.body.holdername;
-    var billingAddr=req.body.billAddr;
-    var paymentDetails={"cardnumber":cardnumber,"mm":mm,"yy":yy,"cvv":cvv,"cardholdername":cardholdername,"billingAddr":billingAddr};
+    var paymentDetails =req.body.paymentMethods;
     var profileJSON = {"fname":fname,"lname":lname,"address":address,"payment":paymentDetails};
     var queryJSON = {"email":email};
     mongo.updateOne('USER_DETAILS',queryJSON,profileJSON,function(err,searchRes){
@@ -85,8 +78,8 @@ router.post('/updateProfile',function(req,res,next){
         }else{
 
             if(searchRes!==null){
-
-                res.status(200);
+               
+                res.status(200).send();
             }else{
                 res.status(500).send({"message": "User Profile not found."});
             }
