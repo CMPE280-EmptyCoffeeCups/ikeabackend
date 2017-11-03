@@ -27,3 +27,10 @@ exports.deleteOne = function(collectionName,deleteJSON, callback){
     var collectionObject = db.get(collectionName);
     collectionObject.remove(deleteJSON,callback);
 }
+
+exports.findAll = function(collectionName,queryJSON,callback){
+    console.log("Searching documents in "+collectionName);
+    var collectionObject = db.get(collectionName);
+    collectionObject.find(queryJSON,callback);
+
+}
