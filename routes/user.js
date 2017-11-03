@@ -16,9 +16,9 @@ router.post('/authenticate', function(req, res, next) {
           });
       }else{
 
-          if(searchRes==null){
-              var inserJSON={"email":email,"fname":fname,"lname":lname};
-              mongo.insert('USER_DETAILS',inserJSON,function(err,insertRes){
+          if(searchRes===null){
+              var insertJSON={"email":email,"fname":fname,"lname":lname};
+              mongo.insert('USER_DETAILS',insertJSON,function(err,insertRes){
                   if(err){
                       console.log("Failed to insert user. "+err);
                       res.status(500).send({
@@ -26,14 +26,13 @@ router.post('/authenticate', function(req, res, next) {
                       });
                   }else{
                       console.log("INSERTING USER");
-
-                      res.status(200);
+                      res.status(200).send({"profile":insertJSON});
                   }
               });
           }else{
              console.log("User already exists");
               console.log(searchRes);
-              res.status(200);
+              res.status(200).send({"profile":searchRes});
           }
 
       }
@@ -85,10 +84,10 @@ router.post('/updateProfile',function(req,res,next){
         }else{
 
             if(searchRes!=null){
-                console.log(searchRes);
-                //res.status(200).send({"user":searchRes});
+
+                res.status(200);
             }else{
-                //res.status(404).send({"message": "User Profile not found."});
+                res.status(500).send({"message": "User Profile not found."});
             }
         }
     });
