@@ -4,8 +4,8 @@ var mongo = require("../db/mongo");
 // Authenticate user and add to DB if needed.
 router.post('/authenticate', function(req, res, next) {
   var email = req.body.email;
-  var fname = req.body.given_name;
-  var lname = req.body.family_name;
+  var fname = req.body.fname;
+  var lname = req.body.lname;
   var requestJSON = {"email":email};
 
   mongo.findOne('USER_DETAILS',requestJSON,function(err,searchRes){
