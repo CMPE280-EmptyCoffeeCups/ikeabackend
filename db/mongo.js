@@ -31,3 +31,9 @@ exports.findOne = function(collectionName,queryJSON,callback){
     var collectionObject = db.collection(collectionName);
     collectionObject.findOne(queryJSON,callback);
 }
+
+
+exports.updateOne = function(collectionName,queryJSON,updateJSON,callback){
+    var collectionObject = db.collection(collectionName);
+    collectionObject.updateOne(queryJSON,updateJSON,callback);
+}
