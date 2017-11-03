@@ -22,3 +22,8 @@ exports.updateOne = function(collectionName,queryJSON,updateJSON,callback){
     collectionObject.update(queryJSON,updateJSON,callback);
 }
 
+exports.deleteOne = function(collectionName,deleteJSON, callback){
+    console.log("Deleting document in "+collectionName);
+    var collectionObject = db.get(collectionName);
+    collectionObject.remove(deleteJSON,callback);
+}
