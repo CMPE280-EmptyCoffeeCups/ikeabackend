@@ -40,8 +40,8 @@ router.post('/authenticate', function(req, res, next) {
 
 });
 
-router.get('/profile', function(req, res, next) {
-    var email = req.body.email;
+router.get('/profile/:email', function(req, res, next) {
+    var email = req.params.email;
     var requestJSON = {"email":email};
     mongo.findOne('USER_DETAILS',requestJSON,function(err,searchRes){
         if(err){
@@ -62,7 +62,7 @@ router.get('/profile', function(req, res, next) {
 
 });
 
-router.post('/updateProfile',function(req,res){
+router.put('/profile',function(req,res){
     var fname=req.body.fname;
     var lname=req.body.lname;
     var address=req.body.address;
@@ -89,9 +89,9 @@ router.post('/updateProfile',function(req,res){
     });
 });
 
-router.post('/deleteProfile',function(req,res){
-    var email = req.body.email;
-    var queryJSON = {email};
+router.delete('/profile/:email',function(req,res){
+    var email = req.params.email;
+    var queryJSON = {email: email};
     mongo.deleteOne('USER_DETAILS',queryJSON,function (err,delRes) {
         if(err){
             res.status(500).send({
