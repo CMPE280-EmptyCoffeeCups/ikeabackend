@@ -169,4 +169,16 @@ router.post('/update',function(req,res){
     );
 });
 
+
+
+router.post('/checkout',function(req,res){
+    
+
+    res.status(200).send({"message":"Order Placed"});
+
+});
+
+
+
+
 module.exports = router;
