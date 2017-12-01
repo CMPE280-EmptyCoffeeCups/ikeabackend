@@ -15,7 +15,7 @@ var jwtCheck = jwt({
 
 var user = require('./routes/user');
 var items = require('./routes/items');
-
+var cart = require('./routes/cart');
 var app = express();
 var path = require('path');
 app.use(cors());
@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use('/user', jwtCheck, user);
 app.use('/items', items);
+app.use('/cart', cart);
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
