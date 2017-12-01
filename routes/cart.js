@@ -8,6 +8,8 @@ router.post('/add', function(req, res) {
     var userEmail = req.body.profile.email;
     console.log(req.body);
     var requestJson = {"email" : userEmail}
+    //TODO: remove user check with the database
+
     mongo.findOne("USER_DETAILS",requestJson,function (err, results) {
         if (err) {
             console.log(err);
@@ -34,7 +36,9 @@ router.post('/add', function(req, res) {
                                 updateJSON = {"CART_PRODUCTS": cartProductDetails};
                                 mongo.updateOne('CART', {"email":userEmail}, {$set: updateJSON}, function (err, updateResults) {
                                     if (err) {
-                                        console.log(err);
+                                        res.status(500).send({
+                                            error: 'There was an error.'
+                                        });
                                     }
                                     else {
                                         console.log("Updated database successfully");
@@ -59,7 +63,9 @@ router.post('/add', function(req, res) {
                             updateJSON = {"CART_PRODUCTS": cartProductDetails};
                             mongo.updateOne('CART', {"email":userEmail}, {$set: updateJSON}, function (err, updateResults) {
                                 if (err) {
-                                    console.log(err);
+                                    res.status(500).send({
+                                        error: 'There was an error.'
+                                    });
                                 }
                                 else {
                                     res.status(200).send({
@@ -80,7 +86,9 @@ router.post('/add', function(req, res) {
                         updateJSON = {"CART_PRODUCTS": cartProductDetails};
                         mongo.updateOne('CART',{"email":userEmail}, {$set: updateJSON}, function (err, updateResults) {
                             if (err) {
-                                console.log(err);
+                                res.status(500).send({
+                                    error: 'There was an error.'
+                                });
                             }
                             else {
                                 res.status(200).send({
@@ -91,7 +99,7 @@ router.post('/add', function(req, res) {
                     }
                 }
                 else{
-                    console.log(cartErr);
+
                     console.log("add new product to cart");
                     insertCartJSON = {"email":userEmail, "CART_PRODUCTS" : [{"PRODUCT_ID" : productId ,
                         "PRODUCT_NAME" : productName,
@@ -101,7 +109,9 @@ router.post('/add', function(req, res) {
                         "INSERTION_DATE":new Date()}]};
                     mongo.insert('CART',insertCartJSON,function (err, results) {
                         if (err) {
-                            console.log(err);
+                            res.status(500).send({
+                                error: 'There was an error.'
+                            });
                         }
                         else {
                             res.status(200).send({
@@ -118,16 +128,19 @@ router.post('/add', function(req, res) {
 
 router.post('/remove',function(req,res){
     var userEmail = req.body.profile.email;
-    var product_id = req.body.itemId;
-    mongo.deleteOne('CART',{"email":userEmail},function (err, results) {
-        if (err) {
-            console.log(err);
+    var product_id = req.body.item.id;
+    console.log(product_id);
+    mongo.updateOne('CART',{"email":userEmail},{$pull : { "CART_PRODUCTS" : {"PRODUCT_ID" : product_id}}},function (err, results) {
+            if (err) {
+                res.status(500).send({
+                    error: 'There was an error.'
+                });
+            }
+            else {
+                res.status(200).send();
+            }
         }
-        else {
-            var jsonResponse = {"statusCode":200,"results":results};
-            res.send(jsonResponse);
-        }
-    });
+    );
 });
 
 router.post('/update',function(req,res){
