@@ -147,11 +147,15 @@ router.post('/update',function(req,res){
     var userEmail = req.body.profile.email;
     var product = req.body.item;
     var qty = req.body.qty;
-    console.log(product.qty);
-    var updateQty = parseInt(qty) + parseInt(product.qty);
-    console.log(updateQty);
-    var queryJson = {$and: [{"email":userEmail},    { "CART_PRODUCTS" : {"PRODUCT_ID" : product.itemId}}]};
-    var updateJson = {$set : {"CART_PRODUCTS.$.QTY" : updateQty}}
+    var queryJson = {
+                    "email": userEmail,
+                    "CART_PRODUCTS": {
+                        $elemMatch: {
+                            "PRODUCT_ID": product._id
+                        }
+                    }
+                };
+    var updateJson = {$set : {"CART_PRODUCTS.$.QTY" :parseInt(qty) }}
     mongo.updateOne('CART',queryJson,updateJson,function (err, results) {
             if (err) {
                 console.log(err);
