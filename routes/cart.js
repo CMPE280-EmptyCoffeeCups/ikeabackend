@@ -18,7 +18,7 @@ router.post('/add', function(req, res) {
             var price = product.PRICE;
             var productId= product._id;
             var fileName = product.IMAGES.main; //change filename
-            var qty = req.body.qty;
+            var qty = parseInt(req.body.qty);
             var insertionDate = new Date();
             var productDetails={"productName":productName,"price":price,"fileName":fileName,"qty":qty};
             mongo.findOne("CART",{"email":userEmail},function (cartErr, cartResults) {
