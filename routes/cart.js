@@ -31,7 +31,7 @@ router.post('/add', function(req, res) {
                         var found = false;
                         for (; i < cartProductDetails.length; i++) {
                             if (cartProductDetails[i].PRODUCT_ID == productId) {
-                                cartProductDetails[i].QTY = cartProductDetails[i].QTY + qty;
+                                cartProductDetails[i].QTY = parseInt(cartProductDetails[i].QTY) + qty;
                                 found = true;
                                 updateJSON = {"CART_PRODUCTS": cartProductDetails};
                                 mongo.updateOne('CART', {"email":userEmail}, {$set: updateJSON}, function (err, updateResults) {
