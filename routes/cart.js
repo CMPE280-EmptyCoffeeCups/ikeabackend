@@ -129,7 +129,7 @@ router.post('/add', function(req, res) {
 
 router.post('/remove',function(req,res){
     var userEmail = req.body.profile.email;
-    var product_id = req.body.item.id;
+    var product_id = req.body.item._id;
     console.log(product_id);
     mongo.updateOne('CART',{"email":userEmail},{$pull : { "CART_PRODUCTS" : {"PRODUCT_ID" : product_id}}},function (err, results) {
             if (err) {
