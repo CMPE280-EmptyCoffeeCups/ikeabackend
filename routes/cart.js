@@ -159,7 +159,9 @@ router.post('/update',function(req,res){
     var updateJson = {$set : {"CART_PRODUCTS.$.QTY" :parseInt(qty) }}
     mongo.updateOne('CART',queryJson,updateJson,function (err, results) {
             if (err) {
-                console.log(err);
+                res.status(500).send({
+                    error: 'There was an error.'
+                });
             }
             else {
 
@@ -178,7 +180,21 @@ router.post('/checkout',function(req,res){
 
 });
 
-
+router.post('/getcart',function(req,res){
+    var email = req.body.profile.email;
+    mongo.findOne('CART',{"email":email},function (err, results) {
+        if (err) {
+            res.status(500).send({
+                error: 'There was an error.'
+            });
+        }
+        else {
+            res.status(200).send({
+                "cart":results
+            });
+        }
+    });
+});
 
 
 module.exports = router;
