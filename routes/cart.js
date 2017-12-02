@@ -53,11 +53,13 @@ router.post('/add', function(req, res) {
                         }
                         if (i == cartProductDetails.length && !found) {
                             var newJSON = {
-                                "PRODUCT_ID": productId,
+                                "_id": productId,
                                 "PRODUCT_NAME": productName,
                                 "PRICE": price,
-                                "QTY": qty,
-                                "FILE_NAME": fileName,
+                                "qty": qty,
+                                "IMAGES": {
+                                    "main": fileName
+                                },
                                 "INSERTION_DATE": new Date()
                             };
                             cartProductDetails[i] = newJSON;
@@ -77,10 +79,13 @@ router.post('/add', function(req, res) {
                         }
                     } else if (cartProductDetails.length == 0) {
                         var newJSON = {
-                            "PRODUCT_ID": productId,
+                            "_id": productId,
                             "PRODUCT_NAME": productName,
-                            "PRICE": price, "QTY": qty,
-                            "FILE_NAME": fileName,
+                            "PRICE": price,
+                            "qty": qty,
+                            "IMAGES": {
+                                "main": fileName
+                            },
                             "INSERTION_DATE": new Date()
                         };
                         cartProductDetails[0] = newJSON;
@@ -102,11 +107,13 @@ router.post('/add', function(req, res) {
                 else{
 
                     console.log("add new product to cart");
-                    insertCartJSON = {"email":userEmail, "CART_PRODUCTS" : [{"PRODUCT_ID" : productId ,
+                    insertCartJSON = {"email":userEmail, "CART_PRODUCTS" : [{"_id" : productId ,
                         "PRODUCT_NAME" : productName,
                         "PRICE" : price,
-                        "QTY" : qty,
-                        "FILE_NAME" : fileName,
+                        "qty" : qty,
+                        "IMAGES": {
+                            "main": fileName
+                        },
                         "INSERTION_DATE":new Date()}]};
                     mongo.insert('CART',insertCartJSON,function (err, results) {
                         if (err) {
@@ -131,7 +138,7 @@ router.post('/remove',function(req,res){
     var userEmail = req.body.profile.email;
     var product_id = req.body.item._id;
     console.log(product_id);
-    mongo.updateOne('CART',{"email":userEmail},{$pull : { "CART_PRODUCTS" : {"PRODUCT_ID" : product_id}}},function (err, results) {
+    mongo.updateOne('CART',{"email":userEmail},{$pull : { "CART_PRODUCTS" : {"_id" : product_id}}},function (err, results) {
             if (err) {
                 res.status(500).send({
                     error: 'There was an error.'
@@ -152,11 +159,11 @@ router.post('/update',function(req,res){
                     "email": userEmail,
                     "CART_PRODUCTS": {
                         $elemMatch: {
-                            "PRODUCT_ID": product._id
+                            "_id": product._id
                         }
                     }
                 };
-    var updateJson = {$set : {"CART_PRODUCTS.$.QTY" :parseInt(qty) }}
+    var updateJson = {$set : {"CART_PRODUCTS.$.qty" :parseInt(qty) }}
     mongo.updateOne('CART',queryJson,updateJson,function (err, results) {
             if (err) {
                 res.status(500).send({
